@@ -1,3 +1,4 @@
+using Application.Activities.Queries;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -12,6 +13,9 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 
 //adding CORS services
 builder.Services.AddCors();
+//adding Mediator Service
+builder.Services.AddMediatR(x =>
+    x.RegisterServicesFromAssemblyContaining<GetActivityList.Handler>());
 
 var app = builder.Build();
 

@@ -7,6 +7,7 @@ using Application.Activities.DTOs;
 using Application.Activities.Queries;
 using Domain;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -15,6 +16,7 @@ namespace API.Controllers
     public class ActivitiesController : BaseApiController
     {
         // We want to return Http Response so we use ActionResult of type of List of Activity
+        // [AllowAnonymous] // if don't need a user to be authenticated against any endpoint 
         [HttpGet]
         public async Task<ActionResult<List<Activity>>> GetActivities()
         {

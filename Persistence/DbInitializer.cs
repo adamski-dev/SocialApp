@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Domain;
+using Microsoft.AspNetCore.Identity;
 
 namespace Persistence
 {
@@ -10,8 +11,23 @@ namespace Persistence
     {
         //we can use SeedData method as static as we are not using any arguments from DbInitializer instance
         // if public class DbInitializer(Argument) and argument was used by SeedData, we wouldn't be able to use static method 
-        public static async Task SeedData(AppDbContext context)
+        public static async Task SeedData(AppDbContext context, UserManager<User> userManager)
         {
+            //We only want to seed our users database if there are not any
+            if (!userManager.Users.Any())
+            {
+                var users = new List<User>
+                {
+                    new() {DisplayName = "Bob", UserName = "bob@test.com", Email = "bob@test.com"},
+                    new() {DisplayName = "Tom", UserName = "tom@test.com", Email = "tom@test.com"},
+                    new() {DisplayName = "Jane", UserName = "jane@test.com", Email = "jane@test.com"}
+                };
+                foreach (var user in users)
+                {
+                    await userManager.CreateAsync(user, "Pa$$w0rd");
+                }
+            }
+
             //We only want to seed our database if there is not any Activity in our database. If there is, we return.
             if (context.Activities.Any()) return; 
             var activities = new List<Activity>

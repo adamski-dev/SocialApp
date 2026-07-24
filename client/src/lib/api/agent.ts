@@ -3,6 +3,7 @@ import { store } from "../stores/store";
 import { toast } from "react-toastify";
 import { router } from "../../app/router/Routes";
 
+
 const sleep = (delay: number) => {
     return new Promise(resolve => {
         setTimeout(resolve, delay);
@@ -10,7 +11,8 @@ const sleep = (delay: number) => {
 }
 
 const agent = axios.create({
-    baseURL: import.meta.env.VITE_API_URL
+    baseURL: import.meta.env.VITE_API_URL,
+    withCredentials: true
 });
 
 //this is going to happen when our request is on its way out

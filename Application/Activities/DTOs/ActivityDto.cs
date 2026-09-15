@@ -2,21 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Profiles.DTOs;
 
-namespace Domain
+namespace Application.Activities.DTOs
 {
-    public class Activity
-    {
-        //This is entity type class to work with database, therefore the properties will be with public access as 
-        // entity framework needs to access this class properties  
-
-        //GUID stands for Global Unique Identifier. A GUID is a 128-bit integer (16 bytes) 
-        public string Id { get; set; } = Guid.NewGuid().ToString();
+    public class ActivityDto
+    { 
+        public required string Id { get; set; }
         public required string Title { get; set; }
         public DateTime Date { get; set; }
         public required string Description { get; set; }
         public required string Category { get; set; }
         public bool IsCancelled { get; set; }
+        public required string HostDisplayName { get; set; }
+        public required string HostId { get; set; }
 
         //location properties
         public required string City { get; set; }
@@ -25,6 +24,6 @@ namespace Domain
         public double Longitude { get; set; }
 
         //navigation properties
-        public ICollection<ActivityAttendee> Attendees { get; set; } = [];
+        public ICollection<UserProfile> Attendees { get; set; } = [];
     }
 }

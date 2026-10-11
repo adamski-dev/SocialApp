@@ -54,7 +54,7 @@ namespace API.Controllers
         [HttpPost("{id}/attend")]
         public async Task<ActionResult>Attend(string id)
         {
-            return BadRequest();
+           //return BadRequest();
             return HandleResult(await Mediator.Send(new UpdateAttendance.Command {Id = id}));
         }
     }

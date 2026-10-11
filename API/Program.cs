@@ -5,6 +5,7 @@ using Application.Core;
 using Application.Interfaces;
 using Domain;
 using FluentValidation;
+using Infrastructure.Photos;
 using Infrastructure.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -37,8 +38,10 @@ builder.Services.AddMediatR(x =>
     
 //adding UserAccessor service
 builder.Services.AddScoped<IUserAccessor, UserAccessor>();
+//adding PhotoService service
+builder.Services.AddScoped<IPhotoService, PhotoService>();
 //adding AutoMapper service
-builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+builder.Services.AddAutoMapper(cfg => cfg.AddMaps(typeof(MappingProfiles).Assembly));
 //adding FluentValidation service
 builder.Services.AddValidatorsFromAssemblyContaining<CreateActivityValidator>();
 //adding Exception Middleware service
@@ -58,6 +61,9 @@ builder.Services.AddAuthorization(opt =>
    }); 
 });
 builder.Services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
+
+//cloudinary service
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 
 var app = builder.Build();
 

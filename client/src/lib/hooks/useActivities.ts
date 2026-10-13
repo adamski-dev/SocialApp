@@ -17,10 +17,12 @@ export const useActivities = (id?: string) => {
     enabled: !id && location.pathname === '/activities' && !!currentUser, //!!curentUser this returns true if currentUser is present as boolean 
     select: data => {
       return data.map(activity => {
+        const host = activity.attendees.find(x => x.id === activity.hostId);
         return {
           ...activity,
           isHost: currentUser?.id === activity.hostId,
-          isGoing: activity.attendees.some(x => x.id === currentUser?.id)
+          isGoing: activity.attendees.some(x => x.id === currentUser?.id),
+          hostImageUrl: host?.imageUrl
         }
       })
     }
@@ -35,10 +37,12 @@ export const useActivities = (id?: string) => {
     enabled: !!id && !!currentUser,
             //this only returns true if id is present and for !!currentUser returns true if currentUser is present
     select: data => {
+      const host = data.attendees.find(x => x.id === data.hostId);
       return {
         ...data,
         isHost: currentUser?.id === data.hostId,
-        isGoing: data.attendees.some(x => x.id === currentUser?.id)
+        isGoing: data.attendees.some(x => x.id === currentUser?.id),
+        hostImageUrl: host?.imageUrl
       }
     }  
   })

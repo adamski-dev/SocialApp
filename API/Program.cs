@@ -1,4 +1,5 @@
 using API.Middleware;
+using API.SignalR;
 using Application.Activities.Queries;
 using Application.Activities.Validators;
 using Application.Core;
@@ -29,6 +30,8 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 
 //adding CORS services
 builder.Services.AddCors();
+//adding SignalR service
+builder.Services.AddSignalR();
 //adding Mediator Service
 builder.Services.AddMediatR(x =>
 {
@@ -78,6 +81,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.MapGroup("api").MapIdentityApi<User>();
+app.MapHub<CommentHub>("/comments");
 
 //Migration from the code:
 using var scope = app.Services.CreateScope();

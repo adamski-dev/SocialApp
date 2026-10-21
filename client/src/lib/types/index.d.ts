@@ -22,6 +22,9 @@ type Profile = {
   displayName: string
   bio?: string
   imageUrl?: string
+  following?: boolean
+  followingCount?: number
+  followersCount?: number
 }
 
 type Photo = {

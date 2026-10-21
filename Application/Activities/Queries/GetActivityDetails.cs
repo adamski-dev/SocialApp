@@ -2,6 +2,7 @@ using System;
 using System.Security.Cryptography.X509Certificates;
 using Application.Activities.DTOs;
 using Application.Core;
+using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain;
@@ -19,12 +20,13 @@ public class GetActivityDetails
         public required string Id { get; set; }
     }
 
-    public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Query, Result<ActivityDto>>
+    public class Handler(AppDbContext context, IMapper mapper, IUserAccessor userAccessor) 
+        : IRequestHandler<Query, Result<ActivityDto>>
     {
         public async Task<Result<ActivityDto>> Handle(Query request, CancellationToken cancellationToken)
         {
             var activity = await context.Activities
-                .ProjectTo<ActivityDto>(mapper.ConfigurationProvider)
+                .ProjectTo<ActivityDto>(mapper.ConfigurationProvider, new {currentUserId = userAccessor.GetUserId()})
                 .FirstOrDefaultAsync(x => request.Id == x.Id, cancellationToken);
 
             return activity == null ? Result<ActivityDto>.Failure("Activity not Found", 404) 

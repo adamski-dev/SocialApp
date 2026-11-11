@@ -2,9 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Domain
 {
+    //Using data annotation to create an index of Property  'Date' for the cursor based pagination
+    // index is automatically created within Activity class for the primary key Id, but if we want the additional index
+    // then we have to specify the filed that we wish the database to create the index on. Migration is needed for this to take
+    // effect.
+    [Index(nameof (Date))]
     public class Activity
     {
         //This is entity type class to work with database, therefore the properties will be with public access as 

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Application.Activities.Commands;
 using Application.Activities.DTOs;
 using Application.Activities.Queries;
+using Application.Core;
 using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -18,9 +19,9 @@ namespace API.Controllers
         // We want to return Http Response so we use ActionResult of type of List of Activity
         // [AllowAnonymous] // if don't need a user to be authenticated against any endpoint 
         [HttpGet]
-        public async Task<ActionResult<List<ActivityDto>>> GetActivities()
+        public async Task<ActionResult<PagedList<ActivityDto, DateTime?>>> GetActivities([FromQuery]ActivityParams activityParams)
         {
-            return await Mediator.Send(new GetActivityList.Query());
+            return HandleResult(await Mediator.Send(new GetActivityList.Query{Params = activityParams}));
         }
 
         [HttpGet("{id}")]
